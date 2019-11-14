@@ -45,7 +45,7 @@ function lastPage (results) {
 export default function ResultsTable (state) {
   return {
     view: function () {
-      return m('div', {class: 'row'}, [
+      return (state.viewTypes.findIndex(view => view.type === 'viewTable') != -1) ? m('div', {class: 'row'}, [
         (state.results.length > 0) ? m('div', {class: 'col-md-12'}, [
           // Title
           m('h3', [
@@ -91,7 +91,7 @@ export default function ResultsTable (state) {
           // go to last page
           (state.pageNum < lastPage(state.results)) ? m('button', {class: 'btn btn-primary', onclick: () => { state.pageNum = lastPage(state.results) }}, m('i', {class: 'fas fa-angle-double-right'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-double-right'}))
         ]) : null
-      ])
+      ]) : null
     }
   }
 }

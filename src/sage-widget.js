@@ -47,6 +47,7 @@ export default function SageWidget (voIDContents, defaultServer, defaultQuery, d
     results: [],
     currentQueryValue: defaultQuery,
     currentQueryName: defaultQName,
+    viewTypes : [],
     isRunning: false,
     isPaused: false,
     graphqlMode: false,

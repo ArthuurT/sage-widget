@@ -5,8 +5,8 @@
   "main": "src/App.js",
   "scripts": {
     "lint": "standard src/*.js --fix",
-    "build": "webpack",
-    "test": "echo 1"
+    "build": "webpack --progress --colors",
+    "start": "webpack-dev-server --progress --colors"
   },
   "repository": {
     "type": "git",
@@ -43,8 +43,9 @@
     "mini-css-extract-plugin": "^0.4.4",
     "standard": "^11.0.1",
     "uglifyjs-webpack-plugin": "^1.3.0",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   },
   "standard": {
     "env": [

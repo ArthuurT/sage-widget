@@ -91,6 +91,8 @@ export default function ExecutionControls (state) {
         state.currentClient = new sage.SageClient(state.currentDataset, state.spy)
         _stubRequestClient(state.currentClient, state.spy, state, estimateProgress())
         state.currentIterator = state.currentClient.execute(state.currentQueryValue)
+        // set view types
+        _setViewTypes()
         // set starting time
         state.startTime = Date.now()
         _subscribe()
@@ -149,6 +151,27 @@ export default function ExecutionControls (state) {
       state.lastError = e.message
       m.redraw()
     }
+  }
+
+  function _setViewTypes() {
+    state.viewTypes = []
+    var query = state.currentQueryValue
+    var views = ["viewTable","viewGraph"]
+
+    views.forEach(view => {
+      var regex = new RegExp('#'+ view + '\\(.*?\\)');
+      var found = query.match(regex);
+      if (found != null){
+        var entry = {type : view, params: null}
+        var param = found[0].match(/\(([^)]+)\)/)
+        if(param != null){
+          entry.params = param[1].split(',')
+        }else{
+          entry.params = []
+        }
+        state.viewTypes.push(entry)
+      }
+    })
   }
 
   function pauseQuery () {
