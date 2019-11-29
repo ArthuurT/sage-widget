@@ -1,18 +1,14 @@
 /* file : results-table.js
 MIT License
-
 Copyright (c) 2019 Thomas Minier
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,6 +34,17 @@ function lastPage (results) {
   return Math.floor(results.length / PAGE_SIZE)
 }
 
+function _filter(state){
+  if(state.currentViewType == "viewTable"){
+    return true
+  }else if(Object.keys(state.viewTypes).length != 0 && state.viewTypes['viewTable'] == undefined){
+    return false
+  }else{
+    return false
+  }
+}
+
+
 /**
 * Display query results
 * @author Thomas Minier
@@ -45,13 +52,9 @@ function lastPage (results) {
 export default function ResultsTable (state) {
   return {
     view: function () {
-      return (state.viewTypes.findIndex(view => view.type === 'viewTable') != -1) ? m('div', {class: 'row'}, [
+
+      return _filter(state) ? m('div', {class: 'row'}, [
         (state.results.length > 0) ? m('div', {class: 'col-md-12'}, [
-          // Title
-          m('h3', [
-            m('i', {class: 'fas fa-list-ul'}),
-            ' Query results'
-          ]),
           m('div', { class: 'table-responsive' }, [
             // Table
             m('table', {class: 'table table-striped'}, [

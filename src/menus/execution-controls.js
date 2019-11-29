@@ -109,7 +109,9 @@ export default function ExecutionControls (state) {
       // open HTTP client & start query processing
       state.currentClient._graph.open()
       state.isRunning = true
+
       state.subscription = state.currentIterator.subscribe(function (b) {
+        //console.log("TABLE :" + b["_content"]["?entity"]);
         if (state.isRunning) {
           if ('toObject' in b) {
             b = b.toObject()
@@ -154,24 +156,29 @@ export default function ExecutionControls (state) {
   }
 
   function _setViewTypes() {
-    state.viewTypes = []
+    state.viewTypes = {}
     var query = state.currentQueryValue
-    var views = ["viewTable","viewGraph"]
+    var views = ["viewTable","viewGraph","viewLinePlot"]
 
     views.forEach(view => {
-      var regex = new RegExp('#'+ view + '\\(.*?\\)');
-      var found = query.match(regex);
+      var regex = new RegExp('#'+ view + '\\(.*?\\)')
+      var found = query.match(regex)
+      var params
       if (found != null){
-        var entry = {type : view, params: null}
         var param = found[0].match(/\(([^)]+)\)/)
         if(param != null){
-          entry.params = param[1].split(',')
+          params = param[1].split(',')
         }else{
-          entry.params = []
+          params = []
         }
-        state.viewTypes.push(entry)
+        state.viewTypes[view] = params
+        state.currentViewType = view
       }
     })
+    //default
+    if(state.currentViewType == null){
+      state.currentViewType ="viewTable"
+    }
   }
 
   function pauseQuery () {
@@ -193,6 +200,7 @@ export default function ExecutionControls (state) {
   }
 
   return {
+
     view: function () {
       return m('div', {class: 'QueryExecutor'}, [
         m('div', {class: 'row'}, [

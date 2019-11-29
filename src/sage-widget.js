@@ -30,10 +30,11 @@ import QueryMenu from './menus/query-menu.js'
 import ExecutionControls from './menus/execution-controls'
 import GraphQLBoard from './menus/graphql-board'
 import ExecutionStats from './execution/execution-stats.js'
-import ResultsTable from './execution/results-table.js'
+import Results from './execution/results.js'
 import { formatVoID } from './utils/void'
 import YASQE from 'yasgui-yasqe'
 import 'yasgui-yasqe/dist/yasqe.min.css'
+import ResultsTable from './execution/results-table.js'
 
 /**
 * A SPARQL/GraphQL widget for querying SaGe servers
@@ -47,7 +48,8 @@ export default function SageWidget (voIDContents, defaultServer, defaultQuery, d
     results: [],
     currentQueryValue: defaultQuery,
     currentQueryName: defaultQName,
-    viewTypes : [],
+    viewTypes : {},
+    currentViewType: null,
     isRunning: false,
     isPaused: false,
     graphqlMode: false,
@@ -140,7 +142,7 @@ export default function SageWidget (voIDContents, defaultServer, defaultQuery, d
           ]),
           m(ExecutionControls(data)),
           m(ExecutionStats(data)),
-          m(ResultsTable(data))
+          m(Results,{state:data})
         ])
       ]
     }
