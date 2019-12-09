@@ -1,0 +1,12 @@
+#viewLinePlot(?numberOfPage,?numberOfArticles)
+
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix wdt: <http://www.wikidata.org/prop/direct/>
+prefix wd: <http://www.wikidata.org/entity/>
+
+SELECT ?numberOfPage (COUNT(DISTINCT ?article) AS ?numberOfArticles) WHERE {
+  ?article wdt:P31 ?class .
+  VALUES(?class) { (wd:Q13442814) }
+  ?article wdt:P1104 ?numberOfPage .
+}
+GROUP BY ?numberOfPage

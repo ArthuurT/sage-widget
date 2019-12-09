@@ -43,7 +43,10 @@ function _stubRequestClient (sageClient, spy, state, estimator) {
         state.httpCalls = spy.nbHTTPCalls
         state.avgServerTime = spy.avgResponseTime
         if ('next' in body && body.next !== null) {
-          state.progression = estimator(body.next)
+          let newProgression = estimator(body.next)
+          if(state.progression <= newProgression){
+            state.progression = newProgression
+          }  
         }
         m.redraw()
       }
@@ -91,6 +94,13 @@ export default function ExecutionControls (state) {
         state.currentClient = new sage.SageClient(state.currentDataset, state.spy)
         _stubRequestClient(state.currentClient, state.spy, state, estimateProgress())
         state.currentIterator = state.currentClient.execute(state.currentQueryValue)
+
+        //TEST
+
+        const subject = 
+
+
+
         // set view types
         _setViewTypes()
         // set starting time
@@ -111,7 +121,7 @@ export default function ExecutionControls (state) {
       state.isRunning = true
 
       state.subscription = state.currentIterator.subscribe(function (b) {
-        //console.log("TABLE :" + b["_content"]["?entity"]);
+        //console.log("Vue Table" + JSON.stringify(b.toObject()))
         if (state.isRunning) {
           if ('toObject' in b) {
             b = b.toObject()

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import createPlot from './line.js'
+import createPlot from './scatter.js'
 import {of} from 'rxjs'
 
 
