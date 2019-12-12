@@ -35,6 +35,7 @@ import { formatVoID } from './utils/void'
 import YASQE from 'yasgui-yasqe'
 import 'yasgui-yasqe/dist/yasqe.min.css'
 import ResultsTable from './execution/results-table.js'
+import { ReplaySubject } from 'rxjs'
 
 /**
 * A SPARQL/GraphQL widget for querying SaGe servers
@@ -60,6 +61,7 @@ export default function SageWidget (voIDContents, defaultServer, defaultQuery, d
     pauseStatus: 'Pause',
     currentClient: null,
     currentIterator: null,
+    replaySubject : null,
     subscription: null,
     spy: null,
     lastError: null,

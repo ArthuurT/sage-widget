@@ -10,3 +10,18 @@ SELECT ?numberOfPage (COUNT(DISTINCT ?article) AS ?numberOfArticles) WHERE {
   ?article wdt:P1104 ?numberOfPage .
 }
 GROUP BY ?numberOfPage
+
+---------------------------
+
+#viewBarPlot(?countryLabel,?population)
+
+prefix wdt: <http://www.wikidata.org/prop/direct/>
+prefix wd: <http://www.wikidata.org/entity/>
+
+SELECT ?countryLabel (MAX(?population) AS ?population) WHERE {
+  ?country wdt:P47 wd:Q1009 .  # shares border with Cameroon
+  ?country <http://schema.org/name> ?countryLabel .
+  ?country wdt:P1082 ?population .
+  FILTER (LANG(?countryLabel) = "fr")
+}
+GROUP BY ?countryLabel

@@ -49,23 +49,24 @@ function _filter(state){
 * Display query results
 * @author Thomas Minier
 */
-export default function ResultsTable (state) {
+export default function ResultsTable () {
+  
   return {
-    view: function () {
+    view: function (vnode) {
 
-      return _filter(state) ? m('div', {class: 'row'}, [
-        (state.results.length > 0) ? m('div', {class: 'col-md-12'}, [
+      return _filter(vnode.attrs.state) ? m('div', {class: 'row'}, [
+        (vnode.attrs.state.results.length > 0) ? m('div', {class: 'col-md-12'}, [
           m('div', { class: 'table-responsive' }, [
             // Table
             m('table', {class: 'table table-striped'}, [
               // headers
               m('thead', [
-                m('tr', map(state.results[0], function (value, key) {
+                m('tr', map(vnode.attrs.state.results[0], function (value, key) {
                   return m('th', key)
                 }))
               ]),
               // Rows
-              m('tbody', state.results.slice(state.pageNum * PAGE_SIZE, state.pageNum * PAGE_SIZE + PAGE_SIZE).map(v => {
+              m('tbody', vnode.attrs.state.results.slice(vnode.attrs.state.pageNum * PAGE_SIZE, vnode.attrs.state.pageNum * PAGE_SIZE + PAGE_SIZE).map(v => {
                 return m('tr', map(v, function (value) {
                   // renders URIs as links
                   if (value.startsWith('http')) {
@@ -80,19 +81,19 @@ export default function ResultsTable (state) {
           ])
         ]) : null,
         // Navigation buttons
-        (state.results.length > 0) ? m('div', {class: 'mx-auto'}, [
+        (vnode.attrs.state.results.length > 0) ? m('div', {class: 'mx-auto'}, [
           // back to first page
-          (state.pageNum > 0) ? m('button', {class: 'btn btn-primary', onclick: () => { state.pageNum = 0 }}, m('i', {class: 'fas fa-angle-double-left'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-double-left'})),
+          (vnode.attrs.state.pageNum > 0) ? m('button', {class: 'btn btn-primary', onclick: () => { vnode.attrs.state.pageNum = 0 }}, m('i', {class: 'fas fa-angle-double-left'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-double-left'})),
           ' ',
           // go to previous page
-          (state.pageNum > 0) ? m('button', {class: 'btn btn-primary', onclick: () => { state.pageNum -= 1 }}, m('i', {class: 'fas fa-angle-left'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-left'})),
+          (vnode.attrs.state.pageNum > 0) ? m('button', {class: 'btn btn-primary', onclick: () => { vnode.attrs.state.pageNum -= 1 }}, m('i', {class: 'fas fa-angle-left'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-left'})),
           // Page number
-          ' Page n°' + (state.pageNum + 1) + ' on ' + (lastPage(state.results) + 1) + ' ',
+          ' Page n°' + (vnode.attrs.state.pageNum + 1) + ' on ' + (lastPage(vnode.attrs.state.results) + 1) + ' ',
           // go to next page
-          (state.pageNum < lastPage(state.results)) ? m('button', {class: 'btn btn-primary', onclick: () => { state.pageNum += 1 }}, m('i', {class: 'fas fa-angle-right'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-right'})),
+          (vnode.attrs.state.pageNum < lastPage(vnode.attrs.state.results)) ? m('button', {class: 'btn btn-primary', onclick: () => { vnode.attrs.state.pageNum += 1 }}, m('i', {class: 'fas fa-angle-right'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-right'})),
           ' ',
           // go to last page
-          (state.pageNum < lastPage(state.results)) ? m('button', {class: 'btn btn-primary', onclick: () => { state.pageNum = lastPage(state.results) }}, m('i', {class: 'fas fa-angle-double-right'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-double-right'}))
+          (vnode.attrs.state.pageNum < lastPage(vnode.attrs.state.results)) ? m('button', {class: 'btn btn-primary', onclick: () => { vnode.attrs.state.pageNum = lastPage(vnode.attrs.state.results) }}, m('i', {class: 'fas fa-angle-double-right'})) : m('button', {class: 'btn btn-secondary disabled'}, m('i', {class: 'fas fa-angle-double-right'}))
         ]) : null
       ]) : null
     }

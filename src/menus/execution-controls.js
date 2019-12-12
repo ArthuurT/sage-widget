@@ -27,6 +27,8 @@ SOFTWARE.
 import m from 'mithril'
 import GraphqlCompiler from '../graphql/compiler'
 import { estimateProgress } from '../monitoring/monitoring'
+import { multicast } from 'rxjs/operators';
+import { Subject, ReplaySubject } from 'rxjs';
 
 const MAX_BUCKET_SIZE = 10
 
@@ -94,15 +96,11 @@ export default function ExecutionControls (state) {
         state.currentClient = new sage.SageClient(state.currentDataset, state.spy)
         _stubRequestClient(state.currentClient, state.spy, state, estimateProgress())
         state.currentIterator = state.currentClient.execute(state.currentQueryValue)
-
-        //TEST
-
-        const subject = 
-
-
-
+        state.replaySubject = new ReplaySubject()
+        state.currentIterator.subscribe(state.replaySubject)
         // set view types
         _setViewTypes()
+        console.log(state.currentViewType)
         // set starting time
         state.startTime = Date.now()
         _subscribe()
@@ -120,7 +118,7 @@ export default function ExecutionControls (state) {
       state.currentClient._graph.open()
       state.isRunning = true
 
-      state.subscription = state.currentIterator.subscribe(function (b) {
+      state.subscription = state.replaySubject.subscribe(function (b) {
         //console.log("Vue Table" + JSON.stringify(b.toObject()))
         if (state.isRunning) {
           if ('toObject' in b) {
@@ -167,8 +165,9 @@ export default function ExecutionControls (state) {
 
   function _setViewTypes() {
     state.viewTypes = {}
+    state.currentViewType = null
     var query = state.currentQueryValue
-    var views = ["viewTable","viewGraph","viewLinePlot"]
+    var views = ["viewTable","viewGraph","viewLinePlot","viewBarPlot"]
 
     views.forEach(view => {
       var regex = new RegExp('#'+ view + '\\(.*?\\)')

@@ -1,6 +1,7 @@
 import m from 'mithril'
 import ResultsTable from './results-table.js'
 import ResultsLinePlot from './results-lineplot.js'
+import ResultsBarPlot from './results-barplot.js'
 
 
 function viewDisable(view,state){
@@ -10,6 +11,7 @@ function viewDisable(view,state){
 function currentView(view,state){
     return state.currentViewType == view
 }
+
 
 export default function Results(){
     return {
@@ -22,28 +24,60 @@ export default function Results(){
                                 m('i', {class: 'fas fa-list-ul'}),
                                 ' Query results'
                             ]),
+                            // Dropdown menu
                             m('div', {class: 'mb-4 mt-4 text-center col-md-12'},[
-                                // Buttons
-                                m(currentView("viewTable",vnode.attrs.state) ? 'button.btn.btn-primary.mr-1' : 'button.btn.btn-dark.mr-1',
-                                {
-                                    onclick : () => {vnode.attrs.state.currentViewType = "viewTable"}
-                                },
-                                "Table"),
-                                m(currentView("viewLinePlot",vnode.attrs.state) ? 'button.btn.btn-primary.mr-1' : 'button.btn.btn-dark.mr-1',
-                                {
-                                    onclick : () => {vnode.attrs.state.currentViewType = "viewLinePlot"},
-                                    disabled:viewDisable("viewLinePlot",vnode.attrs.state)
-                                },
-                                "LinePlot"),
-                                m(currentView("viewNetwork",vnode.attrs.state) ? 'button.btn.btn-primary.mr-1' : 'button.btn.btn-dark.mr-1', 
-                                {
-                                    onclick : () => {vnode.attrs.state.currentViewType = "viewNetwork"}, 
-                                    disabled:viewDisable("viewNetwork",vnode.attrs.state)
-                                },
-                                "Network")
+                                m('button', {
+                                    id: 'dropdownMenu',
+                                    class: 'btn btn-outline-primary dropdown-toggle',
+                                    type: 'button',
+                                    'data-toggle': 'dropdown',
+                                    'aria-haspopup': 'true',
+                                    'aria-expanded': 'false'
+                                  }, 
+                                  'Choose your view'
+                                ),
+                                m('div', {class: 'dropdown-menu','aria-labelledby':"dropDownMenu"},[
+                                    // Buttons
+                                    m('button',
+                                        {
+                                            class : 'dropdown-item',
+                                            type : 'button',
+                                            onclick : () => {vnode.attrs.state.currentViewType = "viewTable"}
+                                        },
+                                        "Table"
+                                    ),
+                                    m('button',
+                                        {
+                                            class : 'dropdown-item',
+                                            type : 'button',
+                                            onclick : () => {vnode.attrs.state.currentViewType = "viewLinePlot"},
+                                            disabled : viewDisable("viewLinePlot",vnode.attrs.state) ? true : false
+                                        },
+                                        "LinePlot"
+                                    ),
+                                    m('button',
+                                        {
+                                            class : 'dropdown-item',
+                                            type : 'button',
+                                            onclick : () => {vnode.attrs.state.currentViewType = "viewBarPlot"},
+                                            disabled : viewDisable("viewBarPlot",vnode.attrs.state) ? true : false
+                                        },
+                                        "BarPlot"
+                                    ),
+                                    m('button',
+                                        {
+                                            class : 'dropdown-item',
+                                            type : 'button',
+                                            onclick : () => {vnode.attrs.state.currentViewType = "viewNetwork"},
+                                            disabled : viewDisable("Network",vnode.attrs.state) ? true : false
+                                        },
+                                        "Network"
+                                    )
+                                ])
                             ]),
-                            m(ResultsTable(vnode.attrs.state)),
-                            m(ResultsLinePlot,{state:vnode.attrs.state})
+                            m(ResultsTable,{state:vnode.attrs.state}),
+                            m(ResultsLinePlot,{state:vnode.attrs.state}),
+                            m(ResultsBarPlot,{state:vnode.attrs.state})
                         ]) : null
             ])
         }
