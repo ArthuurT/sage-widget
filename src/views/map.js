@@ -27,7 +27,7 @@ export default class Map extends View {
 
         // Initialize the platform object:
         var platform = new H.service.Platform({
-            'apikey': 'VxAPqxqqY2EwUjGwJhl53yhaoPIJhnK6MxHs0GxbWl4'
+            'apikey': 'HereMap_apiKey'
         });
 
         // Obtain the default map types from the platform object
