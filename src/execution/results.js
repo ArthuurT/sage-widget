@@ -2,6 +2,7 @@ import m from 'mithril'
 import ResultsTable from './results-table.js'
 import ResultsLinePlot from './results-lineplot.js'
 import ResultsBarPlot from './results-barplot.js'
+import ResultsMap from './results-map.js'
 
 
 function viewDisable(view,state){
@@ -68,8 +69,17 @@ export default function Results(){
                                         {
                                             class : 'dropdown-item',
                                             type : 'button',
+                                            onclick : () => {vnode.attrs.state.currentViewType = "viewMap"},
+                                            disabled : viewDisable("viewMap",vnode.attrs.state) ? true : false
+                                        },
+                                        "Map"
+                                    ),
+                                    m('button',
+                                        {
+                                            class : 'dropdown-item',
+                                            type : 'button',
                                             onclick : () => {vnode.attrs.state.currentViewType = "viewNetwork"},
-                                            disabled : viewDisable("Network",vnode.attrs.state) ? true : false
+                                            disabled : viewDisable("viewNetwork",vnode.attrs.state) ? true : false
                                         },
                                         "Network"
                                     )
@@ -77,7 +87,8 @@ export default function Results(){
                             ]),
                             m(ResultsTable,{state:vnode.attrs.state}),
                             m(ResultsLinePlot,{state:vnode.attrs.state}),
-                            m(ResultsBarPlot,{state:vnode.attrs.state})
+                            m(ResultsBarPlot,{state:vnode.attrs.state}),
+                            m(ResultsMap,{state:vnode.attrs.state})
                         ]) : null
             ])
         }

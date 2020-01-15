@@ -19,7 +19,7 @@ export default function ResultsLinePlot(){
         oncreate: function(vnode){
             console.log('create')
             
-            if(_filter(vnode.attrs.state)){
+            if(vnode.attrs.state.viewTypes['viewLinePlot'] != undefined){
                 var view = new LinePlot('chartLinePlot',vnode.attrs.state.replaySubject,vnode.attrs.state.viewTypes['viewLinePlot'][0],vnode.attrs.state.viewTypes['viewLinePlot'][1])
                 view.display()
             }

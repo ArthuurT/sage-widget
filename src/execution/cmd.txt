@@ -25,3 +25,19 @@ SELECT ?countryLabel (MAX(?population) AS ?population) WHERE {
   FILTER (LANG(?countryLabel) = "fr")
 }
 GROUP BY ?countryLabel
+
+----------------------------
+
+#viewMap(?lat,?long)
+
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+  
+SELECT DISTINCT ?lat ?long WHERE { 
+  ?actor a dbo:Actor .
+  ?actor dbo:birthPlace ?place .
+  ?place geo:lat ?lat .
+  ?place geo:long ?long .
+  ?place dbo:country dbr:Canada . 
+}

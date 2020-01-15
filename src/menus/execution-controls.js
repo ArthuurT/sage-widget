@@ -101,6 +101,7 @@ export default function ExecutionControls (state) {
         // set view types
         _setViewTypes()
         console.log(state.currentViewType)
+        console.log(state.viewTypes)
         // set starting time
         state.startTime = Date.now()
         _subscribe()
@@ -167,7 +168,7 @@ export default function ExecutionControls (state) {
     state.viewTypes = {}
     state.currentViewType = null
     var query = state.currentQueryValue
-    var views = ["viewTable","viewGraph","viewLinePlot","viewBarPlot"]
+    var views = ["viewTable","viewNetwork","viewLinePlot","viewBarPlot","viewMap"]
 
     views.forEach(view => {
       var regex = new RegExp('#'+ view + '\\(.*?\\)')
